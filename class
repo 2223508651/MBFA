@@ -1,0 +1,22 @@
+class population
+{
+public:
+	population();//类初始化
+	individual P[popsize];
+	individual Q[popsize];
+	individual R[2 * popsize];
+	void set_p_q();
+	int Rnum;
+	int Pnum;
+	int Qnum;
+	//P,Q,R中元素的个数
+	void make_new_pop();//产生新的子代
+	void fast_nondominated_sort();//快速非支配排序
+	void calu_crowding_distance(int i);
+	void f_sort(int i);
+	void maincal();//主要操作
+	int choice(int a, int b);
+
+	int len[2 * popsize];  
+	int len_f;//整个群体rank值
+};
