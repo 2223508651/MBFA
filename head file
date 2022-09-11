@@ -1,0 +1,35 @@
+#pragma warning(disable:4996)
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<Windows.h>
+#include<math.h>
+#include<time.h>
+#include<iostream>
+#define Dimension 30//基因维数，在这里即ZDT1问题xi的i的最大值
+#define popsize 100//种群大小
+#define generation 500 //繁衍代数
+#define URAND (rand()/(RAND_MAX+1.0))//产生随机数
+
+int temp1[popsize];//临时数组
+int mark[popsize];//标记数组
+				  
+using namespace std;
+
+
+//个体的类声明：
+class individual
+{
+public:
+	double value[Dimension];//xi的值
+	int sp[2 * popsize];
+	
+	int np;
+
+	int is_dominated;//集合sp的个数
+	void init();//初始化个体
+	int rank;//优先级，Pareto级别为当前最高级
+	double crowding_distance;//拥挤距离
+	double fvalue[2];//ZDT1问题目标函数的值
+	void f_count();
+};
