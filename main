@@ -1,0 +1,27 @@
+int main()
+{
+	FILE* p;
+	p = fopen("ZDT1.txt", "w+");  //保存计算结果
+
+	srand((unsigned int)(time(0)));  //随机数种子
+	population pop;   //种群初始化
+	pop.maincal();    //主操作函数
+	int i, j;
+	//fprintf(p, "Problem ZDT1\n");
+	//fprintf(p, "\n");
+	for (i = 0; i < popsize; i++)  //popsize 种群大小
+	{
+		//fprintf(p, "The %d generation situation:\n", i);
+		for (j = 1; j <= Dimension; j++)    //维度
+		{
+			//fprintf(p, "x%d=%e  ", j, pop.P[i].value[j]);
+		}
+		//fprintf(p, "\n");
+
+		fprintf(p, "%f   %f\n", pop.P[i].fvalue[0], pop.P[i].fvalue[1]);  //评估值
+		fprintf(p, "\n");
+	}
+
+	fclose(p);
+	system("pause");
+	return 0;
