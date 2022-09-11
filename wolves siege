@@ -1,0 +1,35 @@
+void siege()//传统的
+{
+	struct list* zero_pol, * polarity_express, * zero_fuzhi;
+	int op;
+	for (int i = 4; i < 8; i++)//四个猛狼
+	{
+		zero_pol = result;
+		int num = binaryToDec(population[i].chrom) + 1;//以步长1进行围攻
+		for (int m = 0; m < 3; m++)//前进的次数
+		{
+			//int num = binaryToDec(population[i].chrom) + 1;//以步长1进行围攻
+			char* rst = decToBin1(num);
+			zero_fuzhi = fuzhi(zero_pol);
+			polarity_express = fprm_polarity_conversion(zero_fuzhi, rst, *in_num);//极性间的转换*，生成儿子，计算目标函数
+			op = cal_area(polarity_express);
+			while (polarity_express != NULL)
+			{
+				struct list* node = polarity_express->next;
+				free(polarity_express);
+				polarity_express = node;
+			}
+			if (op < population[i].area)
+			{
+				strcpy(population[i].chrom, rst);//猛狼不断更新自己的位置
+				population[i].area = op;
+				num++;
+
+			}
+			else
+				num++;//无论更新不更新，都玩往前围攻
+
+
+		}
+
+	}
