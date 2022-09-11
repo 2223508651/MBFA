@@ -1,0 +1,70 @@
+oid population::make_new_pop()
+{
+	int i, j, x, y, t1, t2, t3;
+	double s, u, b;
+	memset(mark, 0, sizeof(mark));
+	t3 = 0;
+	while (t3 < popsize / 2)
+	{
+		while (t1 = t2 = rand_int(0, popsize - 1), mark[t1]);
+		while (t1 == t2 || mark[t2])
+		{
+			t2 = rand_int(0, popsize - 1);
+		}
+		t1 = choice(t1, t2);
+		temp1[t3++] = t1;
+		mark[t1] = 1;
+	}
+	for (i = 0; i < popsize; i++)
+	{
+		s = rand_real(0.0, 1.0);
+		if (s <= 0.9)
+		{
+			for (j = 0; j < Dimension; j++)
+			{
+				u = rand_real((0.0 + 1e-6), (1.0 - 1e-6));
+				if (u <= 0.5)
+					b = pow(2 * u, 1.0 / 21);
+				else
+					b = 1.0 / pow(2 * (1 - u), 1.0 / 21);
+				x = y = rand_int(0, popsize / 2 - 1);
+				while (x == y)
+					y = rand_int(0, popsize / 2 - 1);
+				Q[i].value[j] = 1.0 / 2 * ((1 - b) * P[temp1[x]].value[j] + (1 + b) * P[temp1[y]].value[j]);
+				if (Q[i].value[j] < 0)
+					Q[i].value[j] = 1e-6;
+				else if (Q[i].value[j] > 1)
+					Q[i].value[j] = 1.0 - (1e-6);
+				if (i + 1 < popsize)
+				{
+					Q[i + 1].value[j] = 1.0 / 2 * ((1 + b) * P[temp1[x]].value[j] + (1 - b) * P[temp1[y]].value[j]);
+					if (Q[i + 1].value[j] <= 0)
+						Q[i + 1].value[j] = 1e-6;
+					else if (Q[i + 1].value[j] > 1)
+						Q[i + 1].value[j] = (1 - 1e-6);
+				}
+			}
+			i++;
+		}
+		else
+		{
+			for (j = 0; j < Dimension; j++)
+			{
+				x = rand_int(0, popsize / 2 - 1);
+				u = rand_real(0.0 + (1e-6), 1.0 - (1e-6));
+				if (u < 0.5)
+					u = pow(2 * u, 1.0 / 21) - 1;
+				else
+					u = 1 - pow(2 * (1 - u), 1.0 / 21);
+				Q[i].value[j] = P[temp1[x]].value[j] + (1.0 - 0.0) * u;
+				if (Q[i].value[j] < 0)
+					Q[i].value[j] = 1e-6;
+				else if (Q[i].value[j] > 1)
+					Q[i].value[j] = 1 - (1e-6);
+			}
+		}
+	}
+	Qnum = popsize;
+	for (i = 0; i < popsize; i++)
+		Q[i].f_count();
+}
