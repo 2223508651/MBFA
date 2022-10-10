@@ -1,0 +1,60 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<math.h>
+#define LENGTH 500 
+#define LENGTHTWO 500
+#define DIVID 500
+FILE* readFile(char _path[200], char* type) {
+	FILE* fp;
+	errno_t err;
+	err = fopen_s(&fp, _path, type);
+	if (err) {
+		printf("文件不存在\n");
+		exit(0);
+	}
+	if (!fp) {
+		printf("数据错误");
+		exit(0);
+	}
+	return fp;
+}
+void saveArray(FILE* fp, double one[LENGTH][2]) {
+	double a, b;
+	char* str = NULL;
+	str = (char*)malloc(sizeof(char) * 100);
+	if (!str) return;
+	int index = 0;
+	while (!feof(fp)) {
+		memset(str, 0, 100);
+		fscanf_s(fp, "%lf %lf", &a, &b);
+		one[index][0] = a;
+		one[index++][1] = b;
+	}
+	free(str);
+}
+void calc(double one[LENGTH][2], double two[LENGTHTWO][2]) {
+	int i, j;
+	double distance=INT_MAX;
+	double temp;
+	for (i = 0; i < LENGTH; i++) {
+		for (j = 0; j < LENGTHTWO; j++) {
+			temp = sqrt((one[i][0] - two[i][0]) * (one[i][0] - two[i][0]) + (one[i][1] - two[i][1]) * (one[i][1] - two[i][1]));
+			if (temp < distance) {
+				distance = temp;
+			}
+		}
+	}
+	distance /= DIVID;
+	printf("%lf\n", distance);
+}
+int main(void) {
+	FILE* fp = NULL,*newFp=NULL;
+	double one[LENGTH][2], two[LENGTHTWO][2];
+	char* end = NULL;
+	fp = readFile("../ZDT1.txt", "r");
+	newFp = readFile("../ZDT1.txt", "r");
+	saveArray(fp, one);
+	saveArray(newFp, two);
+	calc(one,two);
+}
